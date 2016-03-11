@@ -90,7 +90,7 @@ to influence-people
     set nbors other people in-radius loudness
     set sway culture
     ask people in-radius loudness [
-      set culture (distance self * sway + culture)
+      set culture (culture + [culture] of myself)
     ]
   ]
 end
@@ -236,7 +236,7 @@ loudness
 loudness
 0
 100
-15
+5
 1
 1
 NIL
