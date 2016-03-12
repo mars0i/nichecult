@@ -53,7 +53,7 @@ end
 to color-people-high
   ask people [
     if culture > 0 [
-      set color red
+      set color [255 0 0]
     ]
   ]
 end
@@ -61,7 +61,7 @@ end
 to color-people-low
   ask people [
     if culture < 0 [
-      set color blue
+      set color [0 0 255]
     ]
   ]
 end
@@ -75,7 +75,25 @@ to go
   color-people-low
   move-people
   influence-people
+  check-people-high
+  check-people-low
   tick
+end
+
+to check-people-high
+  ask people [
+    if culture > 1 [
+      set culture 1
+    ]
+  ]
+end
+
+to check-people-low
+  ask people [
+    if culture < -1 [
+      set culture -1
+    ]
+  ]
 end
 
 to move-people
@@ -165,7 +183,7 @@ people-number
 people-number
 0
 500
-50
+100
 1
 1
 NIL
@@ -188,7 +206,7 @@ INPUTBOX
 100
 295
 people-number
-50
+100
 1
 0
 Number
