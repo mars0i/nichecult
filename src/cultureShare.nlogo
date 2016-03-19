@@ -1,17 +1,17 @@
 breed [people person]
 breed [houses house]
 people-own [culture base nbors sway]
+patches-own [foundation?]
 
 ;; start setup
  
 to setup
   clear-all
+  set-default-shape houses "house"
   setup-patches
-  setup-houses
   setup-people
   setup-initial-culture
-  color-people-low
-  color-people-high
+  color-people
   reset-ticks
   stop
 end
@@ -19,13 +19,7 @@ end
 to setup-patches
   ask patches [
     set pcolor black 
-  ]
-end
-
-to setup-houses
-  create-houses houses-number [
-    set color green
-    set shape "house"
+    set foundation? false
   ]
 end
 
@@ -41,6 +35,8 @@ to setup-people
   ]
 end
 
+;gives two random people opposite culture values
+;to begin the simulation
 to setup-initial-culture
   ask one-of people [
     set culture 1
@@ -50,16 +46,15 @@ to setup-initial-culture
     set culture -1] 
 end
 
-to color-people-high
+;assigns colors to people
+to color-people
   ask people [
+    if culture = 0 [
+      stop
+    ]
     if culture > 0 [
       set color [255 0 0]
     ]
-  ]
-end
-
-to color-people-low
-  ask people [
     if culture < 0 [
       set color [0 0 255]
     ]
@@ -71,12 +66,14 @@ end
 ;;start go
 
 to go
-  color-people-high
-  color-people-low
+  color-people
   move-people
   influence-people
+  degenerate-people
   check-people-high
   check-people-low
+  build-foundation
+  build-houses
   tick
 end
 
@@ -96,6 +93,8 @@ to check-people-low
   ]
 end
 
+;random movement
+;possibly change to a "flocking" movement
 to move-people
   ask people [
   right random 360
@@ -103,12 +102,59 @@ to move-people
   ]
 end
 
+;changes culture of people around a person according to
+;person's (myself's) culture
 to influence-people
   ask people [
-    set nbors other people in-radius loudness
-    set sway culture
+    if culture = 0 [
+      stop
+    ]
     ask people in-radius loudness [
-      set culture (culture + [culture] of myself)
+      set culture (culture + [culture] of myself * .1)
+    ]
+  ]
+end
+
+;isolated people will have their culture values fall
+to degenerate-people
+  ask people [
+    if culture = 0 [
+      stop
+    ]
+    if culture > 1 [
+      set culture (culture - culture / 10)
+    ]
+    if culture < 1 [
+      set culture (culture - culture / 10)
+    ]
+  ]
+end
+
+;asks people if there is enough culture to build a house
+to build-foundation
+  ask people [
+    if culture = 0 [
+      stop
+    ]
+    ask people in-radius 5 [
+      if sum ([culture] of people) >  20 [
+        set foundation? true
+      ]
+      if sum ([culture] of people) < -20 [
+        set foundation? true
+      ]
+    ]
+  ]       
+end
+
+;builds the house
+to build-houses
+  ask patches [
+    if any? houses in-radius 10 [
+      stop
+    ]
+    if foundation? [
+      sprout-houses 1 [set color green]
     ]
   ]
 end
@@ -117,12 +163,12 @@ end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
-11
-1011
-470
+10
+933
+427
 30
 16
-12.97
+11.7
 1
 10
 1
@@ -164,26 +210,11 @@ SLIDER
 60
 182
 93
-houses-number
-houses-number
-0
-100
-10
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-10
-190
-182
-223
 people-number
 people-number
 0
 500
-100
+50
 1
 1
 NIL
@@ -192,21 +223,10 @@ HORIZONTAL
 INPUTBOX
 10
 105
-95
+100
 165
-houses-number
-10
-1
-0
-Number
-
-INPUTBOX
-10
-235
-100
-295
 people-number
-100
+50
 1
 0
 Number
@@ -247,9 +267,9 @@ NIL
 
 SLIDER
 10
-315
+185
 182
-348
+218
 loudness
 loudness
 0
@@ -259,6 +279,25 @@ loudness
 1
 NIL
 HORIZONTAL
+
+PLOT
+950
+15
+1250
+225
+Cultures
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"greater-than-one" 1.0 0 -2674135 true "" "plot count people with culture > 0"
+"less-than-one" 1.0 0 -7500403 true "" "plot count people with culture < 0"
 
 @#$#@#$#@
 ## WHAT IS IT?
