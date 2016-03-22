@@ -1,12 +1,7 @@
 breed [people person]
 breed [houses house]
-<<<<<<< HEAD
 people-own [culture]
 patches-own [foundation-low foundation-high foundation?]
-=======
-people-own [culture base nbors sway]
-patches-own [foundation?]
->>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
 
 ;; start setup
  
@@ -24,13 +19,10 @@ end
 to setup-patches
   ask patches [
     set pcolor black 
-<<<<<<< HEAD
     set foundation? true
     set foundation-high 0
     set foundation-low 0
-=======
     set foundation? false
->>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
   ]
 end
 
@@ -61,11 +53,8 @@ end
 to color-people
   ask people [
     if culture = 0 [
-<<<<<<< HEAD
       set color [255 255 255]
-=======
       stop
->>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
     ]
     if culture > 0 [
       set color [255 0 0]
@@ -85,12 +74,7 @@ to go
   move-people
   influence-people
   degenerate-people
-<<<<<<< HEAD
   check-people
-=======
-  check-people-high
-  check-people-low
->>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
   build-foundation
   build-houses
   tick
@@ -131,58 +115,19 @@ to influence-people
   ]
 end
 
-<<<<<<< HEAD
 ;culture values fall
-=======
 ;isolated people will have their culture values fall
->>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
 to degenerate-people
   ask people [
     if culture = 0 [
       stop
     ]
-<<<<<<< HEAD
     if abs culture > 0 [
       set culture (culture - culture / 10)
-=======
-    if culture > 1 [
-      set culture (culture - culture / 10)
-    ]
-    if culture < 1 [
-      set culture (culture - culture / 10)
     ]
   ]
 end
-
-;asks people if there is enough culture to build a house
-to build-foundation
-  ask people [
-    if culture = 0 [
-      stop
-    ]
-    ask people in-radius 5 [
-      if sum ([culture] of people) >  20 [
-        set foundation? true
-      ]
-      if sum ([culture] of people) < -20 [
-        set foundation? true
-      ]
-    ]
-  ]       
-end
-
-;builds the house
-to build-houses
-  ask patches [
-    if any? houses in-radius 10 [
-      stop
-    ]
-    if foundation? [
-      sprout-houses 1 [set color green]
->>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
-    ]
-  ]
-end
+  
 
 ;asks people if there is enough culture to build a house
 ;assigns values to houses
@@ -377,11 +322,26 @@ loudness
 NIL
 HORIZONTAL
 
+SLIDER
+9
+233
+181
+266
+borders
+borders
+0
+10
+5
+1
+1
+NIL
+HORIZONTAL
+
 PLOT
-950
-15
-1250
-225
+959
+23
+1331
+409
 Cultures
 NIL
 NIL
@@ -393,29 +353,9 @@ true
 true
 "" ""
 PENS
-<<<<<<< HEAD
-"positivism" 1.0 0 -2674135 true "" "plot count people with [culture > 0]"
-"negativism" 1.0 0 -14730904 true "" "plot count people with [culture < 0]"
+"positivsim" 1.0 0 -2674135 true "" "plot count people with [culture > 0]"
+"negativism" 1.0 0 -13345367 true "" "plot count people with [culture < 0]"
 "nihilism" 1.0 0 -7500403 true "" "plot count people with [culture = 0]"
-
-SLIDER
-10
-240
-182
-273
-borders
-borders
-0
-10
-5
-1
-1
-NIL
-HORIZONTAL
-=======
-"greater-than-one" 1.0 0 -2674135 true "" "plot count people with culture > 0"
-"less-than-one" 1.0 0 -7500403 true "" "plot count people with culture < 0"
->>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -778,5 +718,5 @@ Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 
 @#$#@#$#@
-1
+0
 @#$#@#$#@
