@@ -1,7 +1,12 @@
 breed [people person]
 breed [houses house]
+<<<<<<< HEAD
+people-own [culture]
+patches-own [foundation-low foundation-high foundation?]
+=======
 people-own [culture base nbors sway]
 patches-own [foundation?]
+>>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
 
 ;; start setup
  
@@ -19,7 +24,13 @@ end
 to setup-patches
   ask patches [
     set pcolor black 
+<<<<<<< HEAD
+    set foundation? true
+    set foundation-high 0
+    set foundation-low 0
+=======
     set foundation? false
+>>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
   ]
 end
 
@@ -27,7 +38,6 @@ to setup-people
   create-people people-number [
     set color white
     set culture 0
-    set base 0
     set shape "person"
   ]
   ask turtles [
@@ -41,16 +51,21 @@ to setup-initial-culture
   ask one-of people [
     set culture 1
   ]
-  ask one-of people with [
-    culture = 0] [
-    set culture -1] 
+  ask one-of people with [culture = 0]
+  [
+    set culture -1
+    ] 
 end
 
 ;assigns colors to people
 to color-people
   ask people [
     if culture = 0 [
+<<<<<<< HEAD
+      set color [255 255 255]
+=======
       stop
+>>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
     ]
     if culture > 0 [
       set color [255 0 0]
@@ -70,25 +85,26 @@ to go
   move-people
   influence-people
   degenerate-people
+<<<<<<< HEAD
+  check-people
+=======
   check-people-high
   check-people-low
+>>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
   build-foundation
   build-houses
   tick
 end
 
-to check-people-high
+to check-people
   ask people [
     if culture > 1 [
       set culture 1
+      stop
     ]
-  ]
-end
-
-to check-people-low
-  ask people [
     if culture < -1 [
       set culture -1
+      stop
     ]
   ]
 end
@@ -97,8 +113,8 @@ end
 ;possibly change to a "flocking" movement
 to move-people
   ask people [
-  right random 360
-  forward 1
+    right random 360
+    forward 1
   ]
 end
 
@@ -115,12 +131,20 @@ to influence-people
   ]
 end
 
+<<<<<<< HEAD
+;culture values fall
+=======
 ;isolated people will have their culture values fall
+>>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
 to degenerate-people
   ask people [
     if culture = 0 [
       stop
     ]
+<<<<<<< HEAD
+    if abs culture > 0 [
+      set culture (culture - culture / 10)
+=======
     if culture > 1 [
       set culture (culture - culture / 10)
     ]
@@ -155,7 +179,80 @@ to build-houses
     ]
     if foundation? [
       sprout-houses 1 [set color green]
+>>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
     ]
+  ]
+end
+
+;asks people if there is enough culture to build a house
+;assigns values to houses
+to build-foundation
+  ask people [
+    if culture = 0 [
+      stop
+    ]
+    ask people [
+      if sum ([culture] of people in-radius 8) > 5 [
+        ask patch-here [
+          set foundation-high 1
+          stop
+        ]
+      ]
+      if sum ([culture] of people in-radius 8) < -5 [
+        ask patch-here [
+          set foundation-low 1
+          stop
+        ]
+      ]
+      if sum ([culture] of people in-radius 3) < -.5 [
+        ask patch-here [
+          set foundation-high 0
+          stop
+        ]
+      ]
+      if sum ([culture] of people in-radius 3) > .5 [
+        ask patch-here [
+          set foundation-low 0
+          stop
+        ]
+      ]
+    ]
+  ]       
+end
+
+;"sprouts" the house
+;also "kills" the house
+to build-houses
+  ask people [
+    ask patch-here [
+    if any? houses in-radius borders [
+      stop
+    ]
+    if foundation-high = 1 [
+      sprout-houses 1 [set color pink]
+      set foundation? true
+      stop
+    ]
+    if foundation-high = 0 [
+      set foundation? false
+    ]
+    if foundation-low = 1[
+      sprout-houses 1 [set color cyan]
+      set foundation? true
+      stop
+    ]
+    if foundation-low = 0 [
+      set foundation? false
+    ]
+  ]
+  ask patch-here [
+    if not foundation? [
+      ask houses-here [
+        die
+        stop
+      ]
+    ]
+  ]
   ]
 end
 
@@ -296,8 +393,29 @@ true
 true
 "" ""
 PENS
+<<<<<<< HEAD
+"positivism" 1.0 0 -2674135 true "" "plot count people with [culture > 0]"
+"negativism" 1.0 0 -14730904 true "" "plot count people with [culture < 0]"
+"nihilism" 1.0 0 -7500403 true "" "plot count people with [culture = 0]"
+
+SLIDER
+10
+240
+182
+273
+borders
+borders
+0
+10
+5
+1
+1
+NIL
+HORIZONTAL
+=======
 "greater-than-one" 1.0 0 -2674135 true "" "plot count people with culture > 0"
 "less-than-one" 1.0 0 -7500403 true "" "plot count people with culture < 0"
+>>>>>>> 5cc1afc7cbc997db3af07b80e01b79dd91777a8f
 
 @#$#@#$#@
 ## WHAT IS IT?
