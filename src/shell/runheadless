@@ -1,0 +1,60 @@
+#!/bin/sh
+
+# This version runs a single thread at a time.  Means that we can run as a cheaha job
+# without worrying about how to manage the SGE multi-thread/slot configuration.
+
+# Assume that src/NetLogo.jar is a link to the real NetLogo.jar.
+netlogo=~/bali/src/NetLogo.jar
+datadir=$HOME/data
+
+function usage () {
+	echo "usage: $0 <BehaviorSpaceExperiment> [subdirname] [ additional-netlogo-args ]" >&2
+	echo "BehviorSpaceExperiment: The name of a BehaviorSpace experiment defined in BaliPlus.nlogo" >&2
+	echo "subdirname: Name of subdirectory of $datadir.  If missing, put data in $datadir." >&2
+}
+
+if [ ! -r "$netlogo" ]; then 
+	echo "NetLogo jar file '$netlogo' is missing or unreadable." >&2
+	exit 1
+fi
+
+if [ ! -r "$datadir" ]; then 
+	echo "Data directory '$datadir' is missing." >&2
+	exit 2
+fi
+
+if [ -z "$1" ]; then
+	usage
+	exit 3
+fi
+
+experiment="$1"
+shift
+
+if [ -n "$1" ]; then
+    subdir="$1"
+    shift
+    # if user wants to put data in subdir of data dir, make the subdir if necessary
+    if [ ! -e $datadir/$subdir ]; then
+        mkdir $datadir/$subdir
+    fi
+else
+    subdir=.
+fi
+
+# make unique id number for this invocation of the experiment.
+# if run by qsub, includes the queue job id
+runid=$JOB_ID$$
+
+set -x
+java -Xmx1024m -Dfile.encoding=UTF-8 -cp "$netlogo" org.nlogo.headless.Main \
+  --model $HOME/bali/src/LKJplus/BaliPlus.nlogo \
+  --experiment "$experiment" \
+  --table "$datadir/$subdir/$experiment$runid.csv" \
+  --threads 1 \
+  "$@"
+
+# notes:
+# --table data/"table$experiment.csv" "$@"
+# --threads <number>: use this many threads to do model runs in parallel
+# defaults to one thread per processor. 
