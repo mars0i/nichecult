@@ -1,10 +1,10 @@
 breed [people person]
 breed [houses house]
 people-own [culture]
-patches-own [foundation-low foundation-high foundation?]
+patches-own [foundation-low foundation-high]
 
 ;; start setup
- 
+
 to setup
   clear-all
   set-default-shape houses "house"
@@ -18,11 +18,9 @@ end
 
 to setup-patches
   ask patches [
-    set pcolor black 
-    set foundation? true
+    set pcolor black
     set foundation-high 0
     set foundation-low 0
-    set foundation? false
   ]
 end
 
@@ -46,7 +44,7 @@ to setup-initial-culture
   ask one-of people with [culture = 0]
   [
     set culture -1
-    ] 
+    ]
 end
 
 ;assigns colors to people
@@ -127,7 +125,7 @@ to degenerate-people
     ]
   ]
 end
-  
+
 
 ;asks people if there is enough culture to build a house
 ;assigns values to houses
@@ -162,7 +160,7 @@ to build-foundation
         ]
       ]
     ]
-  ]       
+  ]
 end
 
 ;"sprouts" the house
@@ -170,36 +168,55 @@ end
 to build-houses
   ask people [
     ask patch-here [
-    if any? houses in-radius borders [
-      stop
-    ]
-    if foundation-high = 1 [
-      sprout-houses 1 [set color pink]
-      set foundation? true
-      stop
-    ]
-    if foundation-high = 0 [
-      set foundation? false
-    ]
-    if foundation-low = 1[
-      sprout-houses 1 [set color cyan]
-      set foundation? true
-      stop
-    ]
-    if foundation-low = 0 [
-      set foundation? false
-    ]
-  ]
-  ask patch-here [
-    if not foundation? [
-      ask houses-here [
-        die
-        stop
+      if not any? houses in-radius borders [
+        if-else foundation-high = 1 [
+          sprout-houses 1 [set color pink]
+        ][
+          if-else foundation-low = 1 [
+            sprout-houses 1 [set color cyan]
+          ][
+            ask houses-here [die]
+          ]
+        ]
       ]
     ]
   ]
-  ]
 end
+
+;to build-houses
+;  ask people [
+;    ask patch-here [
+;    if any? houses in-radius borders [
+;      stop
+;    ]
+;    if foundation-high = 1 [
+;      sprout-houses 1 [set color pink]
+;      set foundation? true
+;      stop
+;    ]
+;    if foundation-high = 0 [
+;      set foundation? false
+;    ]
+;    if foundation-low = 1[
+;      sprout-houses 1 [set color cyan]
+;      set foundation? true
+;      stop
+;    ]
+;    if foundation-low = 0 [
+;      set foundation? false
+;    ]
+;  ]
+;  ask patch-here [
+;    if not foundation? [
+;      ask houses-here [
+;        die
+;        stop
+;      ]
+;    ]
+;  ]
+;  ]
+;end
+
 
 ;;end go
 @#$#@#$#@
@@ -256,22 +273,11 @@ people-number
 people-number
 0
 500
-50
+100
 1
 1
 NIL
 HORIZONTAL
-
-INPUTBOX
-10
-105
-100
-165
-people-number
-50
-1
-0
-Number
 
 BUTTON
 140
@@ -700,10 +706,28 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.2.0
+NetLogo 5.3
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="testorama" repetitions="4" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>count people with [culture &gt; 0]</metric>
+    <metric>count people with [culture &lt; 0]</metric>
+    <enumeratedValueSet variable="people-number">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="borders">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="loudness">
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
