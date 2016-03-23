@@ -314,10 +314,10 @@ NIL
 1
 
 SLIDER
-10
-185
-182
-218
+11
+104
+183
+137
 loudness
 loudness
 0
@@ -329,10 +329,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-9
-233
-181
-266
+10
+152
+182
+185
 borders
 borders
 0
@@ -706,7 +706,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.3
+NetLogo 5.3.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
