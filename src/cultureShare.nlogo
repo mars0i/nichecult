@@ -1,6 +1,7 @@
 breed [people person]
 breed [houses house]
 people-own [culture]
+houses-own [age]
 patches-own [foundation-low foundation-high]
 
 ;; start setup
@@ -75,7 +76,9 @@ to go
   check-people
   build-foundation
   build-houses
+  kill-houses
   tick
+  age-houses
 end
 
 to check-people
@@ -167,22 +170,24 @@ end
 ;assigns values to houses
 to build-foundation
   ask people [
-    if sum ([culture] of people in-radius borders) > 5 [
+    if sum ([culture] of people in-radius culture-to-house-radius) > 5 [
       ask patch-here [
         set foundation-high 1
+        stop
       ]
     ]
-    if sum ([culture] of people in-radius borders) < -5 [
+    if sum ([culture] of people in-radius culture-to-house-radius) < -5 [
       ask patch-here [
         set foundation-low 1
+        stop
       ]
     ]
-    if sum ([culture] of people in-radius (borders / 2)) < -10 [
+    if sum ([culture] of people in-radius (culture-to-house-radius / 2)) < -10 [
       ask patch-here [
         set foundation-high 0
       ]
     ]
-    if sum ([culture] of people in-radius (borders / 2)) > 10 [
+    if sum ([culture] of people in-radius (culture-to-house-radius / 2)) > 10 [
       ask patch-here [
         set foundation-low 0
       ]
@@ -207,6 +212,25 @@ to build-houses
         ]
       ]
     ]
+  ]
+end
+
+;to kill houses after number of ticks
+to kill-houses
+  ask houses [
+    if ticks-to-kill = 0 [
+      stop
+    ]
+    if age > ticks-to-kill [
+      die
+    ]
+  ]
+end
+
+;to age houses
+to age-houses
+  ask houses [
+    set age (age + 1)
   ]
 end
 
@@ -348,7 +372,7 @@ SLIDER
 loudness
 loudness
 0
-100
+10
 5
 1
 1
@@ -389,6 +413,36 @@ PENS
 "positivsim" 1.0 0 -2674135 true "" "plot count people with [culture > 0]"
 "negativism" 1.0 0 -13345367 true "" "plot count people with [culture < 0]"
 "nihilism" 1.0 0 -7500403 true "" "plot count people with [culture = 0]"
+
+SLIDER
+10
+196
+183
+229
+culture-to-house-radius
+culture-to-house-radius
+0
+10
+5
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+10
+239
+182
+272
+ticks-to-kill
+ticks-to-kill
+0
+1000
+0
+10
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
