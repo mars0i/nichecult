@@ -104,14 +104,42 @@ end
 ;person's (myself's) culture
 to influence-people
   ask people [
-    if culture = 0 [
-      stop
+    ifelse culture > 0 [
+      ifelse any? houses with [color = pink] in-radius borders [
+        ask people in-radius loudness [
+          set culture (culture + [culture] of myself * .2)
+          ]
+      ][
+      ask people in-radius loudness [
+        set culture (culture + [culture] of myself * .1)
+      ]
     ]
+    ][
+    ifelse culture < 0 [
+      ifelse any? houses with [color = cyan] in-radius borders [
+        ask people in-radius loudness [
+          set culture (culture + [culture] of myself * .2)
+        ]
+      ][
+      ask people in-radius loudness [
+        set culture (culture + [culture] of myself * .1)
+      ]
+      ]
+    ][
     ask people in-radius loudness [
       set culture (culture + [culture] of myself * .1)
     ]
   ]
+]
+  ]
 end
+
+
+;    ask people in-radius loudness [
+;      set culture (culture + [culture] of myself * .1)
+;    ]
+;  ]
+;end
 
 ;culture values fall
 ;isolated people will have their culture values fall
@@ -131,33 +159,24 @@ end
 ;assigns values to houses
 to build-foundation
   ask people [
-    if culture = 0 [
-      stop
+    if sum ([culture] of people in-radius borders) > 5 [
+      ask patch-here [
+        set foundation-high 1
+      ]
     ]
-    ask people [
-      if sum ([culture] of people in-radius 8) > 5 [
-        ask patch-here [
-          set foundation-high 1
-          stop
-        ]
+    if sum ([culture] of people in-radius borders) < -5 [
+      ask patch-here [
+        set foundation-low 1
       ]
-      if sum ([culture] of people in-radius 8) < -5 [
-        ask patch-here [
-          set foundation-low 1
-          stop
-        ]
+    ]
+    if sum ([culture] of people in-radius (borders / 2)) < -10 [
+      ask patch-here [
+        set foundation-high 0
       ]
-      if sum ([culture] of people in-radius 3) < -.5 [
-        ask patch-here [
-          set foundation-high 0
-          stop
-        ]
-      ]
-      if sum ([culture] of people in-radius 3) > .5 [
-        ask patch-here [
-          set foundation-low 0
-          stop
-        ]
+    ]
+    if sum ([culture] of people in-radius (borders / 2)) > 10 [
+      ask patch-here [
+        set foundation-low 0
       ]
     ]
   ]
