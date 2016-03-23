@@ -107,23 +107,31 @@ to influence-people
     ifelse culture > 0 [
       ifelse any? houses with [color = pink] in-radius borders [
         ask people in-radius loudness [
-          set culture (culture + [culture] of myself * .2)
+          ifelse culture > 0 [
+            set culture (culture + [culture] of myself * .2)
+          ][
+          set culture (culture + [culture] of myself * .5)
           ]
-      ][
-      ask people in-radius loudness [
-        set culture (culture + [culture] of myself * .1)
-      ]
-    ]
-    ][
-    ifelse culture < 0 [
-      ifelse any? houses with [color = cyan] in-radius borders [
-        ask people in-radius loudness [
-          set culture (culture + [culture] of myself * .2)
         ]
       ][
       ask people in-radius loudness [
         set culture (culture + [culture] of myself * .1)
+        ]
       ]
+    ][
+    ifelse culture < 0 [
+      ifelse any? houses with [color = cyan] in-radius borders [
+        ask people in-radius loudness [
+          ifelse culture < 0 [
+            set culture (culture + [culture] of myself * .2)
+        ][
+          set culture (culture + [culture] of myself * .5)
+          ]
+        ]
+     ][
+      ask people in-radius loudness [
+        set culture (culture + [culture] of myself * .1)
+        ]
       ]
     ][
     ask people in-radius loudness [
