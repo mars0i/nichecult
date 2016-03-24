@@ -2,7 +2,7 @@ breed [people person]
 breed [houses house]
 people-own [culture]
 houses-own [age]
-patches-own [foundation-low foundation-high]
+patches-own [very-low very-high]
 
 ;; start setup
 
@@ -20,8 +20,8 @@ end
 to setup-patches
   ask patches [
     set pcolor black
-    set foundation-high 0
-    set foundation-low 0
+    set very-high 0
+    set very-low 0
   ]
 end
 
@@ -69,12 +69,12 @@ end
 ;;start go
 
 to go
-  color-people
   move-people
   influence-people
   degenerate-people
+  color-people
   check-people
-  build-foundation
+  validate-patch-for-house
   build-houses
   kill-houses
   tick
@@ -95,7 +95,7 @@ to check-people
 end
 
 ;random movement
-;possibly change to a "flocking" movement
+;(possibly change to a "flocking" movement)
 to move-people
   ask people [
     right random 360
@@ -104,16 +104,17 @@ to move-people
 end
 
 ;changes culture of people around a person according to
-;person's (myself's) culture
+;person's (myself's) culture and the proximity of the
+;people being asked to houses
 to influence-people
   ask people [
     ifelse culture > 0 [
-      ifelse any? houses with [color = pink] in-radius borders [
+      ifelse any? houses with [color = [255 150 160]] in-radius borders [
         ask people in-radius loudness [
           ifelse culture > 0 [
-            set culture (culture + [culture] of myself * .2)
+            set culture (culture + [culture] of myself * .4)
           ][
-          set culture (culture + [culture] of myself * .5)
+          set culture (culture + [culture] of myself * .2)
           ]
         ]
       ][
@@ -123,12 +124,12 @@ to influence-people
       ]
     ][
     ifelse culture < 0 [
-      ifelse any? houses with [color = cyan] in-radius borders [
+      ifelse any? houses with [color = [0 255 255]] in-radius borders [
         ask people in-radius loudness [
           ifelse culture < 0 [
-            set culture (culture + [culture] of myself * .2)
+            set culture (culture + [culture] of myself * .4)
         ][
-          set culture (culture + [culture] of myself * .5)
+          set culture (culture + [culture] of myself * .2)
           ]
         ]
      ][
@@ -144,13 +145,6 @@ to influence-people
 ]
   ]
 end
-
-
-;    ask people in-radius loudness [
-;      set culture (culture + [culture] of myself * .1)
-;    ]
-;  ]
-;end
 
 ;culture values fall
 ;isolated people will have their culture values fall
@@ -168,28 +162,20 @@ end
 
 ;asks people if there is enough culture to build a house
 ;assigns values to houses
-to build-foundation
+to validate-patch-for-house
   ask people [
     if sum ([culture] of people in-radius culture-to-house-radius) > 5 [
       ask patch-here [
-        set foundation-high 1
+        set very-high 1
+        set very-low 0
         stop
       ]
     ]
     if sum ([culture] of people in-radius culture-to-house-radius) < -5 [
       ask patch-here [
-        set foundation-low 1
+        set very-low 1
+        set very-high 0
         stop
-      ]
-    ]
-    if sum ([culture] of people in-radius (culture-to-house-radius / 2)) < -10 [
-      ask patch-here [
-        set foundation-high 0
-      ]
-    ]
-    if sum ([culture] of people in-radius (culture-to-house-radius / 2)) > 10 [
-      ask patch-here [
-        set foundation-low 0
       ]
     ]
   ]
@@ -197,15 +183,19 @@ end
 
 ;"sprouts" the house
 ;also "kills" the house
+;houses of the wrong color according to people around have not been "seen" before
+;the turtle "sees" the patch.
+;; NOTE: a house that spawns cyan but is seemingly sprouted by a red person has not had the
+;; condition of very-low met yet, the sum of culture around it is not low enough to set very-high 0.
 to build-houses
   ask people [
     ask patch-here [
       if not any? houses in-radius borders [
-        if-else foundation-high = 1 [
-          sprout-houses 1 [set color pink]
+        if-else very-high = 1 [
+          sprout-houses 1 [set color [255 150 160]]
         ][
-          if-else foundation-low = 1 [
-            sprout-houses 1 [set color cyan]
+          if-else very-low = 1 [
+            sprout-houses 1 [set color [0 255 255]]
           ][
             ask houses-here [die]
           ]
@@ -227,46 +217,12 @@ to kill-houses
   ]
 end
 
-;to age houses
+;to age houses per tick
 to age-houses
   ask houses [
     set age (age + 1)
   ]
 end
-
-;to build-houses
-;  ask people [
-;    ask patch-here [
-;    if any? houses in-radius borders [
-;      stop
-;    ]
-;    if foundation-high = 1 [
-;      sprout-houses 1 [set color pink]
-;      set foundation? true
-;      stop
-;    ]
-;    if foundation-high = 0 [
-;      set foundation? false
-;    ]
-;    if foundation-low = 1[
-;      sprout-houses 1 [set color cyan]
-;      set foundation? true
-;      stop
-;    ]
-;    if foundation-low = 0 [
-;      set foundation? false
-;    ]
-;  ]
-;  ask patch-here [
-;    if not foundation? [
-;      ask houses-here [
-;        die
-;        stop
-;      ]
-;    ]
-;  ]
-;  ]
-;end
 
 
 ;;end go
