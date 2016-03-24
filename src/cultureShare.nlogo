@@ -40,11 +40,11 @@ end
 ;to begin the simulation
 to setup-initial-culture
   ask one-of people [
-    set culture 1
+    set culture .1
   ]
   ask one-of people with [culture = 0]
   [
-    set culture -1
+    set culture -.1
     ]
 end
 
@@ -323,9 +323,9 @@ SLIDER
 people-number
 people-number
 0
-500
+250
 100
-1
+5
 1
 NIL
 HORIZONTAL
@@ -438,11 +438,21 @@ ticks-to-kill
 ticks-to-kill
 0
 1000
-0
+50
 10
 1
 NIL
 HORIZONTAL
+
+TEXTBOX
+16
+287
+166
+315
+If ticks-to-kill is set to 0, houses last indefinitely.
+11
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
