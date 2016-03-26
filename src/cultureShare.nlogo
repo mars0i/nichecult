@@ -1,7 +1,7 @@
 breed [people person]
 breed [houses house]
 people-own [culture]
-houses-own [age]
+houses-own [age house-culture]
 patches-own [very-low very-high]
 
 ;; start setup
@@ -109,7 +109,7 @@ end
 to influence-people
   ask people [
     ifelse culture > 0 [
-      ifelse any? houses with [color = [255 150 160]] in-radius borders [
+      ifelse any? houses with [house-culture = 1] in-radius borders [
         ask people in-radius loudness [
           ifelse culture > 0 [
             set culture (culture + [culture] of myself * .4)
@@ -124,7 +124,7 @@ to influence-people
       ]
     ][
     ifelse culture < 0 [
-      ifelse any? houses with [color = [0 255 255]] in-radius borders [
+      ifelse any? houses with [house-culture = -1] in-radius borders [
         ask people in-radius loudness [
           ifelse culture < 0 [
             set culture (culture + [culture] of myself * .4)
@@ -192,10 +192,16 @@ to build-houses
     ask patch-here [
       if not any? houses in-radius borders [
         if-else very-high = 1 [
-          sprout-houses 1 [set color [255 150 160]]
+          sprout-houses 1 [
+            set house-culture 1
+            set color [255 150 160]
+          ]
         ][
           if-else very-low = 1 [
-            sprout-houses 1 [set color [0 255 255]]
+            sprout-houses 1 [
+              set house-culture -1
+              set color [0 255 255]
+            ]
           ][
             ask houses-here [die]
           ]
