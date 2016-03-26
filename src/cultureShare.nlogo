@@ -336,7 +336,7 @@ borders
 borders
 0
 10
-3
+2
 1
 1
 NIL
@@ -371,7 +371,7 @@ culture-to-house-radius
 culture-to-house-radius
 0
 10
-0
+5
 1
 1
 NIL
@@ -426,8 +426,7 @@ Houses serve as scaffolding objects which alter cultural transmission. If a send
 `borders`: How close houses can be to each other, and how far the influence of a house
 extends--how close a sender has to be to get a bump from it.
 
-`ticks-to-kill`: How long before a house disappears.  If set to zero, houses live forever.  Note that after a house disappears, its patch may still be conducive to producing a house of the same color.  This can gradually change, though--if the patch is usually surrounded by people of a different culture, it may become conducive
-to producing a house of that culture.
+`ticks-to-kill`: How long before a house disappears.  If set to zero, houses live forever.  Note that after a house disappears, its patch may still be conducive to producing a house of the same color.  This can gradually change, though--if the patch is usually surrounded by people of a different culture, it may become conducive to producing a house of that culture.
 
 
 ## HOW TO USE IT
@@ -783,6 +782,27 @@ NetLogo 5.3
     </enumeratedValueSet>
     <enumeratedValueSet variable="loudness">
       <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="HouseRadius5" repetitions="8" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="3000"/>
+    <metric>count people with [culture &gt; 0]</metric>
+    <enumeratedValueSet variable="culture-to-house-radius">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="loudness">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="people-number">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="borders">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ticks-to-kill">
+      <value value="20"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
