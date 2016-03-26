@@ -1,3 +1,4 @@
+globals [house-multiplier no-house-multiplier]
 breed [people person]
 breed [houses house]
 people-own [culture]
@@ -9,6 +10,8 @@ patches-own [very-low very-high]
 to setup
   clear-all
   set-default-shape houses "house"
+  set house-multiplier 0.4
+  set no-house-multiplier 0.1
   setup-patches
   setup-people
   setup-initial-culture
@@ -103,46 +106,29 @@ to move-people
   ]
 end
 
+to-report sign-of [x]
+  if-else x >= 0 [
+    report 1
+  ][
+    report -1
+  ]
+end
+
 ;changes culture of people around a person according to
 ;person's (myself's) culture and the proximity of the
 ;people being asked to houses
 to influence-people
   ask people [
-    ifelse culture > 0 [
-      ifelse any? houses with [house-culture = 1] in-radius borders [
-        ask people in-radius loudness [
-          ifelse culture > 0 [
-            set culture (culture + [culture] of myself * .4)
-          ][
-          set culture (culture + [culture] of myself * .2)
-          ]
-        ]
-      ][
-      ask people in-radius loudness [
-        set culture (culture + [culture] of myself * .1)
-        ]
-      ]
-    ][
-    ifelse culture < 0 [
-      ifelse any? houses with [house-culture = -1] in-radius borders [
-        ask people in-radius loudness [
-          ifelse culture < 0 [
-            set culture (culture + [culture] of myself * .4)
-        ][
-          set culture (culture + [culture] of myself * .2)
-          ]
-        ]
-     ][
-      ask people in-radius loudness [
-        set culture (culture + [culture] of myself * .1)
-        ]
-      ]
-    ][
-    ask people in-radius loudness [
-      set culture (culture + [culture] of myself * .1)
+    let culture-sign sign-of culture
+    let multiplier no-house-multiplier
+
+    if any? houses with [house-culture = culture-sign] in-radius borders [
+      set multiplier house-multiplier
     ]
-  ]
-]
+
+    ask people in-radius loudness [
+      set culture (culture + [culture] of myself * multiplier)
+    ]
   ]
 end
 
@@ -350,7 +336,7 @@ borders
 borders
 0
 10
-5
+3
 1
 1
 NIL
@@ -385,7 +371,7 @@ culture-to-house-radius
 culture-to-house-radius
 0
 10
-2
+0
 1
 1
 NIL
@@ -400,7 +386,7 @@ ticks-to-kill
 ticks-to-kill
 0
 1000
-1000
+20
 10
 1
 NIL
@@ -410,8 +396,8 @@ TEXTBOX
 16
 287
 166
-315
-If ticks-to-kill is set to 0, houses last indefinitely.
+357
+If ticks-to-kill is set to 0, houses last indefinitely.\nIf culture-to-house-radius is set to 0, there will be no houses.
 11
 0.0
 1
@@ -429,9 +415,19 @@ People with culture can also develop 'influence'. Influence is the strength of o
 
 When people of shared cultural values concentrate in an area, that area's cultural value will set the foundation for a like colored 'house' on a nearby patch. When the cultural value of that area reaches a limit, a house matching the color of the people in that area will spawn on that patch.
 
-Houses serve as scaffolding objects which alter cultural transmission. For example, if a red person is near a red house communicating with another red person, the receiver’s influence is strengthened by .4 in the direction of red. If a red person is near a red house and communicating with a blue person, the receptive blue’s culture is weakened by .2 in the direction of red. If a blue person is near a red house and communicating with a red person, the receptive red’s culture is weakened by .1 in the direction of blue.
+Houses serve as scaffolding objects which alter cultural transmission. If a sender is near a house a color that's the same as its own color, the sender's influence is strengthened by an additional factor of 0.3.  In effect, the houses strengthen cultural transmission when the sender matches the house.
 
-In effect, the houses strengthen cultural transmission between matching individuals when both match the house. Houses maintain average transmission between non-matching individuals when the receiver does not match the house.  And houses weaken transmission of non-matching individuals when the receiver matches the house.
+`people-number`: How many people.
+
+`loudness`: How close a receiver has to be for a sender to influence it.
+
+`culture-to-house-radius`: How close people have to be to a patch to influence whether a house might be built there soon.  If this variable is set to zero, there will be no houses.
+
+`borders`: How close houses can be to each other, and how far the influence of a house
+extends--how close a sender has to be to get a bump from it.
+
+`ticks-to-kill`: How long before a house disappears.  If set to zero, houses live forever.  Note that after a house disappears, its patch may still be conducive to producing a house of the same color.  This can gradually change, though--if the patch is usually surrounded by people of a different culture, it may become conducive
+to producing a house of that culture.
 
 
 ## HOW TO USE IT
