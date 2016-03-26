@@ -379,7 +379,7 @@ culture-to-house-radius
 culture-to-house-radius
 0
 10
-5
+2
 1
 1
 NIL
@@ -394,7 +394,7 @@ ticks-to-kill
 ticks-to-kill
 0
 1000
-50
+1000
 10
 1
 NIL
@@ -413,15 +413,24 @@ If ticks-to-kill is set to 0, houses last indefinitely.
 @#$#@#$#@
 ## WHAT IS IT?
 
-(a general understanding of what the model is trying to show or explain)
+This model simulates the spread of culture via communication through a small population of individuals. The simulation attempts to help the user better understand a few basic components of cultural evolution. It also aims to represent a form of scaffolding in which houses serve as artifacts that alter the transmission of culture. These houses are generated when a group of similar individuals congregate in an area and help to spread their shared culture.
 
 ## HOW IT WORKS
 
-(what rules the agents use to create the overall behavior of the model)
+Each person has one 1 of 3 'culture' values: red (culture > 0), blue (culture < 0), or white/neutral (culture = 0). At setup, only 1 red person and 1 blue person exist while all others are neutral. People with cultural values greater than or less than 0 will attempt to transmit their cultural value to others within their 'loudness' radius, moving randomly along the patches. Neutral individuals do not spread their neutrality – as such the number of neutral individuals gradually decreases as the model runs. For example, if a neutral person comes within 5 patches of a blue person when loudness= 5 then the neutral person will be receptive to blue’s cultural transmission.
+
+People with culture can also develop 'influence'. Influence is the strength of one's cultural transmission and helps determine the direction of cultural transmission. As people interact with other people of the same cultural value their influence levels strengthen. Individuals with lesser cultural influence will be more receptive to individuals with greater cultural influence. If two non-matching individuals come in communication range, the person with weaker influence will be swayed in the direction of the person with stronger influence.
+
+When people of shared cultural values concentrate in an area, that area's cultural value will set the foundation for a like colored 'house' on a nearby patch. When the cultural value of that area reaches a limit, a house matching the color of the people in that area will spawn on that patch.
+
+Houses serve as scaffolding objects which alter cultural transmission. For example, if a red person is near a red house communicating with another red person, the receiver’s influence is strengthened by .4 in the direction of red. If a red person is near a red house and communicating with a blue person, the receptive blue’s culture is weakened by .2 in the direction of red. If a blue person is near a red house and communicating with a red person, the receptive red’s culture is weakened by .1 in the direction of blue.
+
+In effect, the houses strengthen cultural transmission between matching individuals when both match the house. Houses maintain average transmission between non-matching individuals when the receiver does not match the house.  And houses weaken transmission of non-matching individuals when the receiver matches the house.
+
 
 ## HOW TO USE IT
 
-(how to use the model, including a description of each of the items in the Interface tab)
+One can change the number of people with the 'people-number' slider. The loudness slider changes the patch radius with which the people communicate. The louder the slider, the greater the communication distance between two people. The 'borders' slider fixes the patch distance between houses. The smaller the boarder size, the closer houses can be built. For example, if the boarder is set to 5 then houses can be no closer than 5 patches apart. ‘Culture-to-house-radius’ determines the ability of individuals to create houses. When ‘culture-to-house-radius’ is 0, houses cannot be created. When this number is high houses form easily. ‘Ticks-to-kill’ determine the lifespan of the houses; lowering this slider reduces the lifespan of houses. However, if ‘ticks-to-kill’ is at 0 then houses will not die.
 
 ## THINGS TO NOTICE
 
@@ -753,7 +762,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.3.1
+NetLogo 5.3
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
