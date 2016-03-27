@@ -72,6 +72,11 @@ end
 ;;start go
 
 to go
+  if stop-if-fixation and (count people with [culture > 0] = people-number
+                           or
+                           count people with [culture < 0] = people-number) [
+    stop
+  ]
   move-people
   influence-people
   degenerate-people
@@ -371,7 +376,7 @@ culture-to-house-radius
 culture-to-house-radius
 0
 10
-0
+5
 1
 1
 NIL
@@ -402,6 +407,17 @@ If ticks-to-kill is set to 0, houses last indefinitely.\nIf culture-to-house-rad
 0.0
 1
 
+SWITCH
+16
+369
+173
+402
+stop-if-fixation
+stop-if-fixation
+0
+1
+-1000
+
 @#$#@#$#@
 ## WHAT IS IT?
 
@@ -427,6 +443,8 @@ Houses serve as scaffolding objects which alter cultural transmission. If a send
 extends--how close a sender has to be to get a bump from it.
 
 `ticks-to-kill`: How long before a house disappears.  If set to zero, houses live forever.  Note that after a house disappears, its patch may still be conducive to producing a house of the same color.  This can gradually change, though--if the patch is usually surrounded by people of a different culture, it may become conducive to producing a house of that culture.
+
+`stop-if-fixation`: If true, stops running as soon as one of the colors reaches 100%, after which no change in frequency can occur.
 
 
 ## HOW TO USE IT
