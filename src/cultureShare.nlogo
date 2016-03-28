@@ -82,8 +82,9 @@ to go
   validate-patch-for-house
   build-houses
   kill-houses
-  tick
   age-houses
+  show count people
+  tick
 end
 
 to check-people
@@ -104,7 +105,7 @@ end
 to move-people
   ask people [
     right random 360
-    forward 1
+    forward people-speed
   ]
 end
 
@@ -315,10 +316,10 @@ NIL
 1
 
 SLIDER
-11
-104
-183
-137
+10
+135
+182
+168
 loudness
 loudness
 0
@@ -331,9 +332,9 @@ HORIZONTAL
 
 SLIDER
 10
-152
+171
 182
-185
+204
 borders
 borders
 0
@@ -366,9 +367,9 @@ PENS
 
 SLIDER
 10
-196
+207
 183
-229
+240
 culture-to-house-radius
 culture-to-house-radius
 0
@@ -381,9 +382,9 @@ HORIZONTAL
 
 SLIDER
 10
-239
+241
 182
-272
+274
 ticks-to-kill
 ticks-to-kill
 0
@@ -441,6 +442,21 @@ no-house-multiplier
 1
 0.1
 0.05
+1
+NIL
+HORIZONTAL
+
+SLIDER
+10
+96
+183
+130
+people-speed
+people-speed
+0
+10
+1
+0.1
 1
 NIL
 HORIZONTAL
@@ -886,5 +902,5 @@ Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 
 @#$#@#$#@
-0
+1
 @#$#@#$#@
