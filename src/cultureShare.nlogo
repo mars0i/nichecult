@@ -1,4 +1,3 @@
-globals [house-multiplier no-house-multiplier]
 breed [people person]
 breed [houses house]
 people-own [culture]
@@ -10,8 +9,6 @@ patches-own [very-low very-high]
 to setup
   clear-all
   set-default-shape houses "house"
-  set house-multiplier 0.4
-  set no-house-multiplier 0.1
   setup-patches
   setup-people
   setup-initial-culture
@@ -128,7 +125,7 @@ to influence-people
     let multiplier no-house-multiplier
 
     if any? houses with [house-culture = culture-sign] in-radius borders [
-      set multiplier house-multiplier
+      set multiplier with-house-multiplier
     ]
 
     ask people in-radius loudness [
@@ -399,24 +396,54 @@ HORIZONTAL
 
 TEXTBOX
 16
-287
-166
-357
-If ticks-to-kill is set to 0, houses last indefinitely.\nIf culture-to-house-radius is set to 0, there will be no houses.
+408
+187
+506
+If ticks-to-kill is set to 0, houses last indefinitely.\n\nIf culture-to-house-radius is set to 0, there will be no houses.
 11
 0.0
 1
 
 SWITCH
-16
-369
-173
-402
+11
+362
+168
+395
 stop-if-fixation
 stop-if-fixation
 0
 1
 -1000
+
+SLIDER
+10
+317
+187
+351
+with-house-multiplier
+with-house-multiplier
+0
+1
+0.4
+0.05
+1
+NIL
+HORIZONTAL
+
+SLIDER
+10
+280
+184
+314
+no-house-multiplier
+no-house-multiplier
+0
+1
+0.1
+0.05
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
