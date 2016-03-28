@@ -454,7 +454,7 @@ people-speed
 people-speed
 0
 10
-1
+0.1
 0.1
 1
 NIL
@@ -884,6 +884,72 @@ NetLogo 5.3
     </enumeratedValueSet>
     <enumeratedValueSet variable="ticks-to-kill">
       <value value="20"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="Speed01HouseRadius5" repetitions="500" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="500"/>
+    <metric>count people with [culture &gt; 0]</metric>
+    <enumeratedValueSet variable="borders">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="people-speed">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="loudness">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ticks-to-kill">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="culture-to-house-radius">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="stop-if-fixation">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="with-house-multiplier">
+      <value value="0.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="people-number">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="no-house-multiplier">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="Speed01NoHouses" repetitions="500" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="500"/>
+    <metric>count people with [culture &gt; 0]</metric>
+    <enumeratedValueSet variable="borders">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="people-speed">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="loudness">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ticks-to-kill">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="culture-to-house-radius">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="stop-if-fixation">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="with-house-multiplier">
+      <value value="0.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="people-number">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="no-house-multiplier">
+      <value value="0.1"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
