@@ -83,7 +83,6 @@ to go
   build-houses
   kill-houses
   age-houses
-  show count people
   tick
 end
 
