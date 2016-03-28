@@ -338,7 +338,7 @@ borders
 borders
 0
 10
-2
+5
 1
 1
 NIL
@@ -387,9 +387,9 @@ SLIDER
 ticks-to-kill
 ticks-to-kill
 0
-1000
-20
+100
 10
+1
 1
 NIL
 HORIZONTAL
