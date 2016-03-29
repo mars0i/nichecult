@@ -323,7 +323,7 @@ loudness
 loudness
 0
 10
-5
+1
 1
 1
 NIL
@@ -338,7 +338,7 @@ borders
 borders
 0
 10
-5
+2
 1
 1
 NIL
@@ -411,7 +411,7 @@ SWITCH
 395
 stop-if-fixation
 stop-if-fixation
-0
+1
 1
 -1000
 
@@ -419,7 +419,7 @@ SLIDER
 10
 317
 187
-351
+350
 with-house-multiplier
 with-house-multiplier
 0
@@ -434,7 +434,7 @@ SLIDER
 10
 280
 184
-314
+313
 no-house-multiplier
 no-house-multiplier
 0
@@ -449,12 +449,12 @@ SLIDER
 10
 96
 183
-130
+129
 people-speed
 people-speed
 0
 10
-0.1
+1
 0.1
 1
 NIL
@@ -950,6 +950,40 @@ NetLogo 5.3
     </enumeratedValueSet>
     <enumeratedValueSet variable="no-house-multiplier">
       <value value="0.1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="fastWithBorders2bothhouses" repetitions="500" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="500"/>
+    <metric>count people with [culture &gt; 0]</metric>
+    <enumeratedValueSet variable="with-house-multiplier">
+      <value value="0.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="people-speed">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="people-number">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ticks-to-kill">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="borders">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="culture-to-house-radius">
+      <value value="0"/>
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="no-house-multiplier">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="loudness">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="stop-if-fixation">
+      <value value="false"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
