@@ -952,7 +952,7 @@ NetLogo 5.3
       <value value="0.1"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="fastWithBorders2bothhouses" repetitions="500" runMetricsEveryStep="false">
+  <experiment name="fastWithBorders2bothhouses" repetitions="1000" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="500"/>
