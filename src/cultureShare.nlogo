@@ -424,7 +424,7 @@ with-house-multiplier
 with-house-multiplier
 0
 1
-0.4
+0.6
 0.05
 1
 NIL
@@ -439,7 +439,7 @@ no-house-multiplier
 no-house-multiplier
 0
 1
-0.1
+0.3
 0.05
 1
 NIL
@@ -978,6 +978,41 @@ NetLogo 5.3
     </enumeratedValueSet>
     <enumeratedValueSet variable="no-house-multiplier">
       <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="loudness">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="stop-if-fixation">
+      <value value="false"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="fastWithBorders2bothhousesBigMultipliers" repetitions="1000" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="1000"/>
+    <metric>count people with [culture &gt; 0]</metric>
+    <metric>count houses</metric>
+    <enumeratedValueSet variable="with-house-multiplier">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="people-speed">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="people-number">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ticks-to-kill">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="borders">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="culture-to-house-radius">
+      <value value="0"/>
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="no-house-multiplier">
+      <value value="0.3"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="loudness">
       <value value="1"/>
